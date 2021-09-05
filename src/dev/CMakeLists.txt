@@ -1,0 +1,10 @@
+target_sources(fplyx
+    PUBLIC 
+        stdout.c
+        stdin.c
+)
+target_sources(fplyxdbg
+    PUBLIC
+        stdout.c
+        stdin.c
+)

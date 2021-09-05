@@ -1,0 +1,13 @@
+target_sources(fplyx
+    PUBLIC
+        fplyx.c
+        fplyx_exti.c
+        fplyx_general.c
+)
+target_sources(fplyxdbg
+    PUBLIC
+        fplyx_test.c
+        fplyx_exti.c
+        fplyx_general.c
+)
+add_subdirectory(dev)
