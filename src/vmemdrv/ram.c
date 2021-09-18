@@ -184,7 +184,7 @@ fplyx_vmem_t* fplyx_memram_obtain(fplyx_memdrv_impl_t* const self)
     &__fplyx_memram_thrid;
     result->set_cthriopos = (void (*)(fplyx_vmem_t*, unsigned long, void*))
     &__fplyx_memram_sthriopos;
-    result->subthread_iter = (void (*)(fplyx_vmem_t*, void*))
+    result->subthread_iter = (unsigned long (*)(fplyx_vmem_t*, void*))
     &__fplyx_memram_thriter;
     result->subthread_name = (char *(*)(fplyx_vmem_t*, void*))
     &__fplyx_memram_thrname;
@@ -1252,13 +1252,19 @@ unsigned long __fplyx_memram_thrgcount(fplyx_vmem_t * const self, fplyx_memram_s
     return ctx->gsubthr;
 }
 void __fplyx_memram_thrrecurrent(fplyx_memram_t* const instance); /*neither used nor implemented*/
-void __fplyx_memram_thriter(fplyx_vmem_t * const self, fplyx_memram_subthrid const result)
+unsigned long __fplyx_memram_thriter(fplyx_vmem_t * const self, fplyx_memram_subthrid const result)
 {
     /*almost the same thing as above*/
     fplyx_memram_t* const instance = self->_instance;
     fplyx_memram_subthr_t* const start = instance->current; /* prevent infinite loop */
     char ctrl;
-    while(!ctrl)
+    struct __fplyx_memram_subthrid minsleep;
+    if(instance->current)
+        minsleep.ctx = &instance->current->ctx;
+    else
+        minsleep.ctx = &instance->ctx;
+    minsleep.subthr = instance->current;
+    while(1&~ctrl)
     {
         if(!instance->subthrnciter)
         {
@@ -1267,32 +1273,36 @@ void __fplyx_memram_thriter(fplyx_vmem_t * const self, fplyx_memram_subthrid con
             if(instance->ctx.nsubthr)
             { /*has subthreads, prepare subthread handling next time*/
                 instance->subthrciter = reallocarray(instance->subthrciter, 1, sizeof(unsigned int));
-                if(!instance->subthrciter) return;
+                if(!instance->subthrciter) return 0;
                 instance->subthrnciter = 1;
                 instance->subthrciter[0] = 0;
                 instance->current = instance->ctx.subthr[0];
             }
             /* on first function call main context is pushed */
-            if(!(instance->ctx.iostate&FPLYX_VMEMIOSTATE_FULLUNAVAIL) && instance->ctx.execstack.nref)
+            if(!(instance->ctx.iostate&FPLYX_VMEMIOSTATE_FULLUNAVAIL) && instance->ctx.execstack.nref && (!instance->ctx.sleepms))
             {
                 /*push main context*/
                 result->id = 0;
                 result->subthr = (void *)0;
-                return;
+                result->ctx = &instance->ctx;
+                ctrl |= 1; /*once pushed, no need to iterate more*/
             }
         } else {
             /*push the current subthread if it is available*/
-            if(!(instance->current->ctx.iostate&FPLYX_VMEMIOSTATE_FULLUNAVAIL) && instance->current->ctx.execstack.nref)
+            if(!(instance->current->ctx.iostate&FPLYX_VMEMIOSTATE_FULLUNAVAIL) && instance->current->ctx.execstack.nref && (!instance->current->ctx.sleepms))
             {
                 result->id = instance->subthrciter[instance->subthrnciter-1];
                 result->subthr = instance->current;
+                result->ctx = &instance->current->ctx;
                 ctrl &= ~2;
+                ctrl |= 1; /*once pushed... you know already, no need to repeat it twice*/
             }
+            /*else the loop will continue finding next available */
             /*what is the next subthread?*/
             if(!(ctrl&2) && instance->current->ctx.nsubthr)
             { /*returned subthread has its own subthreads*/
                 instance->subthrciter = reallocarray(instance->subthrciter, instance->subthrnciter+1, sizeof(unsigned int));
-                if(!instance->subthrciter) return;
+                if(!instance->subthrciter) return 0;
                 instance->subthrnciter++;
                 instance->subthrciter[instance->subthrnciter-1] = 0;
                 /*next current is first subthread of prev current*/
@@ -1310,7 +1320,7 @@ void __fplyx_memram_thriter(fplyx_vmem_t * const self, fplyx_memram_subthrid con
                 } else if(!(instance->ctx.iostate&FPLYX_VMEMIOSTATE_FULLUNAVAIL))
                 { /*no subthreads left at the main thread, set the beginning*/
                     instance->subthrciter = realloc(instance->subthrciter, 0);
-                    if(!instance->subthrciter) return;
+                    if(!instance->subthrciter) return 0;
                     instance->subthrnciter = 0;
                     instance->current = (void *)0;
                 }
@@ -1323,16 +1333,28 @@ void __fplyx_memram_thriter(fplyx_vmem_t * const self, fplyx_memram_subthrid con
                     instance->current = instance->current->parent->ctx.subthr[instance->subthrnciter-1];
                 } else { /*end of the list, returning back*/
                     instance->subthrciter = reallocarray(instance->subthrciter, instance->subthrnciter-1, sizeof(unsigned int));
-                    if(!instance->subthrciter) return;
+                    if(!instance->subthrciter) return 0;
                     instance->subthrnciter--;
                     instance->current = instance->current->parent;
                     ctrl |= 2;
                 }
             }
         }
+        if(instance->current->ctx.sleepms < minsleep.ctx->sleepms)
+        {
+            minsleep.ctx = instance->current?&instance->current->ctx:&instance->ctx;
+            minsleep.subthr = instance->current;
+            if(minsleep.subthr)
+                minsleep.id = __fplyx_memram_thrsctxid(instance->current->parent?&instance->current->parent->ctx:&instance->ctx, minsleep.subthr);
+            else
+                minsleep.id = 0;
+        }
         if(instance->current == start)
             break;
     }
+    if(1&~ctrl)
+        *result = minsleep; /*push the subthread with the least sleep value*/
+    return result->ctx->sleepms;
 }
 char __fplyx_memram_iowreal(fplyx_vmem_t * const self, fplyx_memram_subthrid const subthrid)
 {
@@ -1559,6 +1581,90 @@ void __fplyx_memram_iogcdevreader(fplyx_vmem_t * const self, fplyx_memram_cdevid
     if(id > (cdevid->cdev->nwatcher-1))
         return;
     *result = *((fplyx_memram_subthrid*)cdevid->cdev->watchers)[id];
+}
+unsigned long __fplyx_memram_thrgsleep(fplyx_vmem_t * const self, fplyx_memram_subthrid const subthrid)
+{
+    return subthrid->ctx->sleepms;
+}
+void __fplyx_memram_thrssleep(fplyx_vmem_t* const self, const unsigned long msec, fplyx_memram_subthrid const subthrid)
+{
+    subthrid->ctx->sleepms = msec;
+}
+void __fplyx_memram_thrgdecsleep(fplyx_vmem_t * self, unsigned long msec)
+{
+    fplyx_memram_t* const instance = self->_instance;
+    fplyx_memram_subthr_t* const start = instance->current; /* prevent infinite loop */
+    unsigned char ctrl;
+    struct __fplyx_memram_subthrid minsleep;
+    if(instance->current)
+        minsleep.ctx = &instance->current->ctx;
+    else
+        minsleep.ctx = &instance->ctx;
+    minsleep.subthr = instance->current;
+    struct fplyx_memram_context* ctx;
+    do
+    {
+        ctx = instance->current?&instance->current->ctx:&instance->ctx;
+        if(ctx->sleepms > msec)
+            ctx->sleepms -= msec;
+        else
+            ctx->sleepms = 0;
+        if(!instance->subthrnciter)
+        {
+            /* first iteration or main thread queued */
+            /* prepare first subthread if it exists to be pushed at next function call */
+            if(instance->ctx.nsubthr)
+            { /*has subthreads, prepare subthread handling next time*/
+                instance->subthrciter = reallocarray(instance->subthrciter, 1, sizeof(unsigned int));
+                if(!instance->subthrciter) return;
+                instance->subthrnciter = 1;
+                instance->subthrciter[0] = 0;
+                instance->current = instance->ctx.subthr[0];
+            }
+        } else {
+            /*what is the next subthread?*/
+            if(!(ctrl&2) && instance->current->ctx.nsubthr)
+            { /*returned subthread has its own subthreads*/
+                instance->subthrciter = reallocarray(instance->subthrciter, instance->subthrnciter+1, sizeof(unsigned int));
+                if(!instance->subthrciter) return;
+                instance->subthrnciter++;
+                instance->subthrciter[instance->subthrnciter-1] = 0;
+                /*next current is first subthread of prev current*/
+                instance->current = instance->current->ctx.subthr[instance->subthrciter[instance->subthrnciter-1]];
+            } else
+              /*or it doesn't: in this case we move to the next subthread in its super context*/
+            if(instance->subthrnciter == 1)
+            { /*first depth subthread, next subthread at instance*/
+                if(instance->subthrciter[0] < instance->ctx.nsubthr)
+                {
+                    ctrl &= ~2;
+                    instance->subthrciter[0]++;
+                    /*next current is one of the top subthreads*/
+                    instance->current = instance->ctx.subthr[instance->subthrciter[0]];
+                } else if(!(instance->ctx.iostate&FPLYX_VMEMIOSTATE_FULLUNAVAIL))
+                { /*no subthreads left at the main thread, set the beginning*/
+                    instance->subthrciter = realloc(instance->subthrciter, 0);
+                    if(!instance->subthrciter) return;
+                    instance->subthrnciter = 0;
+                    instance->current = (void *)0;
+                }
+            } else
+            { /*no subthreads of current, N-depth, N > 0, meaning that we have a parent subthread*/
+                if(instance->subthrciter[instance->subthrnciter-1] < instance->current->parent->ctx.nsubthr)
+                { /*select next subthread from its parent's subthreads list*/
+                    ctrl &= ~2;
+                    instance->subthrciter[instance->subthrnciter-1]++;
+                    instance->current = instance->current->parent->ctx.subthr[instance->subthrnciter-1];
+                } else { /*end of the list, returning back*/
+                    instance->subthrciter = reallocarray(instance->subthrciter, instance->subthrnciter-1, sizeof(unsigned int));
+                    if(!instance->subthrciter) return;
+                    instance->subthrnciter--;
+                    instance->current = instance->current->parent;
+                    ctrl |= 2;
+                }
+            }
+        }
+    } while(instance->current != start);
 }
 char __fplyx_memram_thrcreate(fplyx_vmem_t * const self, char* const name, const char opts, fplyx_memram_subthrid const subthrid, fplyx_memram_subthrid const result)
 {

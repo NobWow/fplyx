@@ -170,7 +170,7 @@ typedef struct __fplyx_vmem_t
 	/* DEPRECATED: iteration is managed by using depth-array
     unsigned int (*subthread_iter_value)(struct __fplyx_vmem_t *); Subthread ID that will be processed on this iteration of interpreter event loop
 	void (*subthread_set_iter)(struct __fplyx_vmem_t *, unsigned int *new iteration*); Set subthread ID that will be processed...*/
-    void (*subthread_iter)(struct __fplyx_vmem_t *, void * /*result subthrid*/); /*performs an iteration of subthread queue and returns the first available subthread to dispatch. Sets null result if current iteration refers to main thread or if none of the subthreads are available at the moment*/
+    unsigned long (*subthread_iter)(struct __fplyx_vmem_t *, void * /*result subthrid*/); /*performs an iteration of subthread queue and returns the first available subthread to dispatch. Sets null result if current iteration refers to main thread. If none of the subthreads are available at the moment and the returned value will be the least sleepms value (result will be that subthread with the least sleepms)*/
 	//char** (*subthread_namearr)(struct __fplyx_vmem_t *, size_t, char**, unsigned int);
 	char (*subthread_create)(struct __fplyx_vmem_t *, char* /*name*/, char /*options*/, void* /*parent subthrid*/, void* /*result subthrid*/); 
 	char (*subthread_suspend)(struct __fplyx_vmem_t *, void* /*subthrid*/, char /*bool 0/1*/); 
@@ -185,6 +185,10 @@ typedef struct __fplyx_vmem_t
     char* (*subthread_devresolve)(struct __fplyx_vmem_t *, char* /*name*/, void* /*subthrid*/, void* /*result subthrid*/); /*show */
 	size_t (*subthread_size)(struct __fplyx_vmem_t *, void* /*subthrid*/);
     char (*subthread_superflags)(struct __fplyx_vmem_t*, void* /*subthrid*/); /*sum all the subthread flags up to the primary subthread*/
+    /* Each subthread can be suspended temporarily, so lets operate with the timers */
+    unsigned long (*subthread_get_sleep)(struct __fplyx_vmem_t*, void* /*subthrid*/); /*set sleepms value for this subthread. Notice that it doesn't set the iostate flag for the subthread */
+    void (*subthread_set_sleep)(struct __fplyx_vmem_t*, unsigned long msec, void* /*subthrid*/); /*set sleepms value for this subthread. Notice that it doesn't set the iostate flag for the subthread */
+    void (*subthread_gdecsleep)(struct __fplyx_vmem_t*, unsigned long msec); /*Globally decrease a sleepms value for every single subthread that does exist. Usually a copypaste from subthread_iter, but the algorithm is used differently*/
 	/*
      * References is yet more efficient way of two-way interaction with subthread in isolated mode.
      * They could be used for either providing the access to a data from the outside

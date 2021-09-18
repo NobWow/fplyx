@@ -1,0 +1,4 @@
+[submodule "deps/utf8proc"]
+	path = deps/utf8proc
+	url = https://github.com/JuliaStrings/utf8proc
+	branch = v2.6.1

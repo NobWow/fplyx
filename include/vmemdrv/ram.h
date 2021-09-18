@@ -93,6 +93,7 @@ struct fplyx_memram_context
     fplyx_memram_devrefkit_t** devkits; /*receive devices (cdevices) from other threads. Useful in restricted mode and can work as whitelist but usually works as mapper*/
     unsigned long gsubthr;
     unsigned long iopos;
+    unsigned long sleepms;
     unsigned long _last_mapid;
     unsigned long _last_cdevmapid;
     unsigned long _last_subthrmapid;
@@ -241,7 +242,7 @@ size_t __fplyx_memram_gthriopos(fplyx_vmem_t * self, fplyx_memram_subthrid subth
 void __fplyx_memram_sthriopos(fplyx_vmem_t * self, unsigned long pos, fplyx_memram_subthrid subthrid);
 unsigned int __fplyx_memram_thrcount(fplyx_vmem_t * self, fplyx_memram_subthrid subthrid);
 unsigned long __fplyx_memram_thrgcount(fplyx_vmem_t * self, fplyx_memram_subthrid subthrid);
-void __fplyx_memram_thriter(fplyx_vmem_t * self, fplyx_memram_subthrid result); /*easy for iterating through subthread queue*/
+unsigned long __fplyx_memram_thriter(fplyx_vmem_t * self, fplyx_memram_subthrid result); /*easy for iterating through subthread queue*/
 char __fplyx_memram_iowreal(fplyx_vmem_t * self, fplyx_memram_subthrid subthrid);
 char __fplyx_memram_iowsubthr(fplyx_vmem_t * self, fplyx_memram_subthrid subthrid, fplyx_memram_subthrid target);
 char __fplyx_memram_iowcdev(fplyx_vmem_t * self, fplyx_memram_subthrid /*subthrid*/, fplyx_memram_cdevid cdevid);
@@ -252,8 +253,11 @@ char __fplyx_memram_iounwcdev(fplyx_vmem_t * self, fplyx_memram_subthrid subthri
 char __fplyx_memram_iounwreal(fplyx_vmem_t * self, fplyx_memram_subthrid subthrid);
 unsigned int __fplyx_memram_iowcount(fplyx_vmem_t * self, fplyx_memram_subthrid subthrid);
 unsigned int __fplyx_memram_iocdevrcount(fplyx_vmem_t * self, fplyx_memram_cdevid cdevid);
-void __fplyx_memram_iogwatcher(fplyx_vmem_t *, fplyx_memram_subthrid subthrid, unsigned int id, fplyx_memram_subthrid result);
-void __fplyx_memram_iogcdevreader(fplyx_vmem_t *, fplyx_memram_cdevid cdevid, unsigned int id, fplyx_memram_subthrid result);
+void __fplyx_memram_iogwatcher(fplyx_vmem_t * self, fplyx_memram_subthrid subthrid, unsigned int id, fplyx_memram_subthrid result);
+void __fplyx_memram_iogcdevreader(fplyx_vmem_t * self, fplyx_memram_cdevid cdevid, unsigned int id, fplyx_memram_subthrid result);
+unsigned long __fplyx_memram_thrgsleep(fplyx_vmem_t * self, fplyx_memram_subthrid subthrid);
+void __fplyx_memram_thrssleep(fplyx_vmem_t * self, unsigned long msec, fplyx_memram_subthrid subthrid);
+void __fplyx_memram_thrgdecsleep(fplyx_vmem_t * self, unsigned long msec);
 //unsigned long __fplyx_memram_thriterval(fplyx_vmem_t * self);
 //void __fplyx_memram_thrsiter(fplyx_vmem_t * self, unsigned long ival);
 //char** __fplyx_memram_thrnarr(fplyx_vmem_t * self, size_t limit, fplyx_memram_subthrid subthrid);
