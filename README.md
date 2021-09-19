@@ -31,18 +31,20 @@ The idea of making fplyx is to create an easily integrable, reimplementable, por
 7. Then, the CMake should create a configured Visual Studio project. Open this project in the Visual Studio and build.
 8. *more coming soon...*
 # Building on Linux/Unix (GNU/Linux, FreeBSD, OpenBSD etc.)
+## Requirements
 1. Make sure that a GCC is installed in your system
 2. Make sure that CMake is also installed.
-## CMake under Ubuntu, Debian, ZorinOS etc...
+### CMake under Ubuntu, Debian, ZorinOS etc...
   * `$ sudo apt-get install gcc cmake`
-## CMake under Fedora, RHEL, CentOS...
+### CMake under Fedora, RHEL, CentOS...
   * `$ sudo yum install gcc cmake`
-## Arch based GNU/Linux distro
+### Arch based GNU/Linux distro
   * `$ sudo pacman -Sy gcc cmake`
-## FreeBSD
+### FreeBSD
   * `$ sudo pkg install gcc cmake`
-## OpenBSD/NetBSD
+### OpenBSD/NetBSD
   * `# pkg_add -i gcc cmake`
+## Configure and build
 3. Create a build directory in a repository's folder
   * `mkdir build && cd build`
 4. Run CMake configuration
