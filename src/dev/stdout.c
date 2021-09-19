@@ -102,15 +102,14 @@ char __fplyx_devstdout_wav (fplyx_vdevice_t *self)
 }
 char __fplyx_devstdout_opr (fplyx_vdevice_t *self)
 {
-    if(!(self->iostate & FPLYX_VDEV_IOSTATE_RERR))
-        self->iostate += FPLYX_VDEV_IOSTATE_RERR;
+    self->iostate |= FPLYX_VDEV_IOSTATE_RERR;
     return 0;
 }
 char __fplyx_devstdout_opw (fplyx_vdevice_t *self)
 {
     if(!(self->iostate & FPLYX_VDEV_IOSTATE_WOPEN))
     {
-        self->iostate += FPLYX_VDEV_IOSTATE_WOPEN;
+        self->iostate |= FPLYX_VDEV_IOSTATE_WOPEN;
         return 1;
     } else {
         return 0;
@@ -124,7 +123,7 @@ char __fplyx_devstdout_clw (fplyx_vdevice_t *self)
 {
     if(self->iostate & FPLYX_VDEV_IOSTATE_WOPEN)
     {
-        self->iostate -= FPLYX_VDEV_IOSTATE_WOPEN;
+        self->iostate &= ~FPLYX_VDEV_IOSTATE_WOPEN;
         return 1;
     } else {
         return 0;
@@ -140,8 +139,7 @@ char __fplyx_devstdout_sw (fplyx_vdevice_t *self, int offset)
 }
 char __fplyx_devstdout_r(fplyx_vdevice_t *self, char* target_ptr, size_t amount)
 {
-    if(!(self->iostate & FPLYX_VDEV_IOSTATE_RERR))
-        self->iostate += FPLYX_VDEV_IOSTATE_RERR;
+    self->iostate |= FPLYX_VDEV_IOSTATE_RERR;
     return 0;
 }
 char __fplyx_devstdout_w (fplyx_vdevice_t *self, const char* data_ptr, size_t amount)
@@ -152,7 +150,7 @@ char __fplyx_devstdout_w (fplyx_vdevice_t *self, const char* data_ptr, size_t am
     )
     {
         fwrite(data_ptr, sizeof(char), amount, stdout);
-        self->iostate -= FPLYX_VDEV_IOSTATE_WAVAIL;
+        self->iostate &= ~FPLYX_VDEV_IOSTATE_WAVAIL;
         return 1;
     }
     else

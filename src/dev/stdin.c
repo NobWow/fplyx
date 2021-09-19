@@ -102,7 +102,7 @@ char __fplyx_devstdin_opr (fplyx_vdevice_t *self)
 {
     if(!(self->iostate & FPLYX_VDEV_IOSTATE_ROPEN))
     {
-        self->iostate += FPLYX_VDEV_IOSTATE_ROPEN;
+        self->iostate |= FPLYX_VDEV_IOSTATE_ROPEN;
         return 1;
     } else
         return 0;
@@ -110,14 +110,14 @@ char __fplyx_devstdin_opr (fplyx_vdevice_t *self)
 char __fplyx_devstdin_opw (fplyx_vdevice_t *self)
 {
     if(!(self->iostate & FPLYX_VDEV_IOSTATE_WERR))
-        self->iostate += FPLYX_VDEV_IOSTATE_WERR;
+        self->iostate |= FPLYX_VDEV_IOSTATE_WERR;
     return 0;
 }
 char __fplyx_devstdin_clr (fplyx_vdevice_t *self)
 {
     if(self->iostate & FPLYX_VDEV_IOSTATE_ROPEN)
     {
-        self->iostate -= FPLYX_VDEV_IOSTATE_ROPEN;
+        self->iostate &= ~FPLYX_VDEV_IOSTATE_ROPEN;
         return 1;
     } else
         return 0;
@@ -142,7 +142,7 @@ char __fplyx_devstdin_r(fplyx_vdevice_t *self, char* target_ptr, size_t amount)
     )
     {
         fread(target_ptr, sizeof(char), amount, stdin);
-        self->iostate -= FPLYX_VDEV_IOSTATE_RAVAIL;
+        self->iostate &= ~FPLYX_VDEV_IOSTATE_RAVAIL;
         return 1;
     }
     else
@@ -152,7 +152,7 @@ char __fplyx_devstdin_w(fplyx_vdevice_t *self, const char* data_ptr, size_t amou
 {
 
     if(!(self->iostate & FPLYX_VDEV_IOSTATE_WERR))
-        self->iostate += FPLYX_VDEV_IOSTATE_WERR;
+        self->iostate |= FPLYX_VDEV_IOSTATE_WERR;
     return 0;
 }
 char __fplyx_devstdin_fr(fplyx_vdevice_t *self)

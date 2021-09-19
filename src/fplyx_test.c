@@ -18,7 +18,10 @@ int main(int argc, char** argv) {
     /* bruh */
     fplyx_exti_vdevadd(that);
     puts("Segmentation faulted (core dumpet)");
-    
+    /* stdout is already open */
+    that->vdevice->iostate |= FPLYX_VDEV_IOSTATE_WAVAIL; /* this should be assigned every time stdout becomes available for writing (in case of testing, it is just every time) */
+    that->vdevice->write(that->vdevice, "Hello WOrld!\n", 10);
+    that->vdevice->flush_write(that->vdevice); /*not needed as it isn't a buffered device*/
     struct pollfd* fds = calloc(1, sizeof(struct pollfd));
     /* that->end() is not called here, instead use fplyx_exti_vdevdel, as it calls that->end() as well as removing the element from the array */
     fplyx_exti_vdevdel("stdout");
