@@ -74,7 +74,7 @@ fplyx_vdevice_impl_t *fplyx_exti_vdevfetch(const char* const name, unsigned int*
 	}
 	for(unsigned int i = 0; i < fplyx_vdev_n; i++)
 	{
-		if(fplyx_vdevices[i]->name == name) {
+		if(!strcmp(fplyx_vdevices[i]->name, name)) {
 			if(ri)
 				*ri = i;
 			return fplyx_vdevices[i];
@@ -88,7 +88,7 @@ fplyx_vdevice_impl_t *fplyx_exti_vdevfetch(const char* const name, unsigned int*
 void fplyx_exti_vdevdel(const char* const name)\
 {
 	unsigned int ri = 0;
-	fplyx_vdevice_impl_t * const target =fplyx_exti_vdevfetch(name, &ri);
+	fplyx_vdevice_impl_t * const target = fplyx_exti_vdevfetch(name, &ri);
 	if(!target)
 		return;
 	target->end(target);
@@ -97,8 +97,7 @@ void fplyx_exti_vdevdel(const char* const name)\
 	memmove(fplyx_vdevices + ((ri) * sizeof(void *)),
 			fplyx_vdevices + (ri + 1) * sizeof(void *),
 			(size_t)((fplyx_vdev_n - ri + 1) * sizeof(void *)));
-	fplyx_vdevices = (fplyx_vdevice_impl_t **) realloc(fplyx_vdevices,
-    (--fplyx_vdev_n)*sizeof(void *) );
+	fplyx_vdevices = reallocarray(fplyx_vdevices, --fplyx_vdev_n, sizeof(void *));
 }
 void fplyx_exti_vmemadd(fplyx_memdrv_impl_t * const memdrv)
 {
@@ -115,7 +114,7 @@ fplyx_memdrv_impl_t *fplyx_exti_vmemfetch(const char* const name, unsigned int* 
 	}
 	for(unsigned int i = 0; i < fplyx_memdrvs_n; i++)
 	{
-		if(fplyx_memdrvs[i]->name == name) {
+		if(!strcmp(fplyx_memdrvs[i]->name, name)) {
 			if(ri)
 				*ri = i;
 			return fplyx_memdrvs[i];
@@ -138,8 +137,7 @@ void fplyx_exti_vmemdel(const char* const name)
 	memmove(fplyx_memdrvs + (ri) * sizeof(void *),
 			fplyx_memdrvs + (ri + 1) * sizeof(void *),
 			(size_t)((fplyx_memdrvs_n - ri + 1) * sizeof(void *)));
-	fplyx_memdrvs = (fplyx_memdrv_impl_t **) realloc(fplyx_memdrvs,
-    (--fplyx_memdrvs_n)*sizeof(void *) );
+	fplyx_memdrvs = reallocarray(fplyx_memdrvs, --fplyx_memdrvs_n, sizeof(void *));
 }
 
 void fplyx_exti_interpadd(fplyx_interpreter_impl_t * const interp)
@@ -157,7 +155,7 @@ fplyx_interpreter_impl_t *fplyx_exti_interpfetch(const char* const name, unsigne
 	}
 	for(unsigned int i = 0; i < fplyx_interp_n; i++)
 	{
-		if(fplyx_interpreters[i]->name == name) {
+		if(!strcmp(fplyx_interpreters[i]->name, name)) {
 			if(ri)
 				*ri = i;
 			return fplyx_interpreters[i];
@@ -180,7 +178,6 @@ void fplyx_exti_interpdel(const char* const name)
 	memmove(fplyx_interpreters + (ri) * sizeof(void *),
 			fplyx_interpreters + (ri + 1) * sizeof(void *),
 			(size_t)((fplyx_interp_n - ri + 1) * sizeof(void *)));
-	fplyx_interpreters = (fplyx_interpreter_impl_t **) realloc(fplyx_interpreters,
-    (--fplyx_interp_n)*sizeof(void *) );
+	fplyx_interpreters = reallocarray(fplyx_interpreters, --fplyx_interp_n, sizeof(void *));
 }
 

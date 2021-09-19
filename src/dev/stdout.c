@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include <dev/stdout.h>
 #include <poll.h>
 #include <stdlib.h>
@@ -8,8 +10,9 @@
 
 fplyx_vdevice_impl_t* fplyx_devstdout_create()
 {
-    fplyx_vdevice_impl_t* extension = (fplyx_vdevice_impl_t*) malloc(sizeof(fplyx_vdevice_impl_t));
-    memset(extension, 0, sizeof(fplyx_vdevice_impl_t));
+    fplyx_vdevice_impl_t* extension = malloc(sizeof(fplyx_vdevice_impl_t));
+    if(extension) printf(" yes\n"); else printf(" no\n");
+    memset((void *)extension, 0, sizeof(fplyx_vdevice_impl_t));
     extension->name = "stdout";
     extension->prepare = &fplyx_devstdout_prepare;
     extension->end = &fplyx_devstdout_end;

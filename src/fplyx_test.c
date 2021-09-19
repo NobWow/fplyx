@@ -10,16 +10,18 @@ int main(int argc, char** argv) {
     fplyx_exti_start();
     puts("Allocated!");
     fplyx_vdevice_impl_t* that = fplyx_devstdout_create();
+    printf("AAAAA\n");
+    printf("Device pointer -> %p\n", that);
+    printf("BBBB\n");
     that->prepare(that);
-
+    printf("segfault here?\n");
     /* bruh */
     fplyx_exti_vdevadd(that);
-    puts("Segmentation fault (core dumped)");
+    puts("Segmentation faulted (core dumpet)");
     
     struct pollfd* fds = calloc(1, sizeof(struct pollfd));
-
-    that->end(that);
-    free(that);
+    /* that->end() is not called here, instead use fplyx_exti_vdevdel, as it calls that->end() as well as removing the element from the array */
+    fplyx_exti_vdevdel("stdout");
     fplyx_exti_end();
     free(fds);
 }

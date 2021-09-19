@@ -9,18 +9,14 @@
 #include <fplyx_general.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 void fplyxg_pushptr(void *** const arr, unsigned int* const narr, void * const item)
 {
-	*arr = (void **) realloc(*arr,(++(*narr)) * sizeof(void *));
-	*arr[*narr] = item;
-    puts("pushptr: is it done?");
-    if(*arr)
-        puts("pushptr: yes");
-    else
-        puts("bad :(");
+	*arr = (void **) reallocarray(*arr, *narr + 1, sizeof(void *));
+    if(!(*arr)) return;
+    (*narr)++;
+	*arr[*narr - 1] = item;
 }
 void fplyxg_dev_allocbuffer(char** const buf, unsigned int* const nbuf, const unsigned int size)
 {

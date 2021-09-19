@@ -19,7 +19,7 @@
 
 typedef struct __fplyx_vdevice_impl_t
 {
-	const char* name;
+	char* name;
 	void (*prepare)(struct __fplyx_vdevice_impl_t *);
 	void (*end)(struct __fplyx_vdevice_impl_t *);
 	fplyx_vdevice_t *vdevice;
@@ -28,7 +28,7 @@ typedef struct __fplyx_vdevice_impl_t
 /* prepare & end might be deprecated for mem and interpreter since these functions are embed into instance */
 typedef struct __fplyx_memdrv_impl_t
 {
-	const char* name;
+	char* name;
 	void (*prepare)(struct __fplyx_memdrv_impl_t *);
 	void (*end)(struct __fplyx_memdrv_impl_t *);
 	fplyx_vmem_t *(*obtain)();
@@ -36,7 +36,7 @@ typedef struct __fplyx_memdrv_impl_t
 
 typedef struct __fplyx_interpreter_impl_t
 {
-	const char* name;
+	char* name;
 	void (*prepare)(struct __fplyx_interpreter_impl_t *);
 	void (*end)(struct __fplyx_interpreter_impl_t *);
 	fplyx_interpreter_t *(*obtain)();

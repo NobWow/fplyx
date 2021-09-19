@@ -11,3 +11,4 @@ target_sources(fplyxdbg
         fplyx_general.c
 )
 add_subdirectory(dev)
+add_subdirectory(vmemdrv)
