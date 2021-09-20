@@ -7,7 +7,7 @@
 
 #ifndef VMEMDRV_FILEMEM_H_
 #define VMEMDRV_FILEMEM_H_
-#include <fplyx_type/extension.h>
+#include "../fplyx_type/extension.h"
 
 void fplyx_filemem_prepare(fplyx_memdrv_impl_t* self);
 void fplyx_filemem_end(fplyx_memdrv_impl_t* self);

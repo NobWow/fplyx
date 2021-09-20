@@ -8,7 +8,7 @@
 #ifndef FPLYX_H_
 #define FPLYX_H_
 
-#include <fplyx_type/interpreter.h>
+#include "fplyx_type/interpreter.h"
 #include <stddef.h>
 
 void fplyx_interpreter_init();

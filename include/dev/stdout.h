@@ -8,7 +8,7 @@
 #ifndef DEV_STDOUT_H_
 #define DEV_STDOUT_H_
 
-#include <fplyx_type/extension.h>
+#include "../fplyx_type/extension.h"
 
 fplyx_vdevice_impl_t * fplyx_devstdout_create();
 void fplyx_devstdout_prepare(fplyx_vdevice_impl_t *self);

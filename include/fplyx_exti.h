@@ -11,7 +11,7 @@
 #ifndef FPLYX_EXTI_H_
 #define FPLYX_EXTI_H_
 
-#include <fplyx_type/extension.h>
+#include "fplyx_type/extension.h"
 
 extern fplyx_vdevice_impl_t ** fplyx_vdevices;
 extern unsigned int fplyx_vdev_n;

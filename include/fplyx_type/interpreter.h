@@ -60,7 +60,6 @@ typedef struct __fplyx_interpreter_t
 	unsigned int			npend;
 	//execution options is either used by a third-party software or by built-in interpreter function
 	unsigned int			tick_interval_nsec; //is an interval between each execution in nanoseconds
-	unsigned long			sleep_remaining_nsec; //if sleep command is called, how much time is remaining to timeout the ppoll call (or any third-party implementations)
     /* 
      * Implementations should provide at least 1 function: exec_tick
      * exec_tick performs exactly single tick of the code and is used

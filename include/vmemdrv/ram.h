@@ -8,7 +8,7 @@
 #ifndef VMEMDRV_RAM_H_
 #define VMEMDRV_RAM_H_
 
-#include <fplyx_type/extension.h>
+#include "../fplyx_type/extension.h"
 #include <sys/cdefs.h>
 
 

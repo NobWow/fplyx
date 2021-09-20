@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <dev/stdout.h>
 #include <poll.h>
+#include <fplyx_format/main.h>
 
 int main(int argc, char** argv) {
     puts("Is everything compiled?");

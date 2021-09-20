@@ -1,7 +1,7 @@
 #ifndef DEV_STDIN_H_
 #define DEV_STDIN_H_
 
-#include <fplyx_type/extension.h>
+#include "../fplyx_type/extension.h"
 fplyx_vdevice_impl_t * fplyx_devstdin_create();
 void fplyx_devstdin_prepare(fplyx_vdevice_impl_t *self);
 void fplyx_devstdin_end(fplyx_vdevice_impl_t *self);

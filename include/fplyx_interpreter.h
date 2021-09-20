@@ -8,7 +8,7 @@
 #ifndef FPLYX_INTERPRETER_H_
 #define FPLYX_INTERPRETER_H_
 
-#include <fplyx_type/interpreter.h>
+#include "fplyx_type/interpreter.h"
 
 /*
  * Allocates a new abstract interpreter data required to execute FPlyx byte-code
