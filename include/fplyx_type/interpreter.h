@@ -7,8 +7,8 @@
 
 #ifndef FPLYX_TYPE_INTERPRETER_H_
 #define FPLYX_TYPE_INTERPRETER_H_
-#include <fplyx_type/vdev.h>
-#include <fplyx_type/vmem.h>
+#include "vdev.h"
+#include "vmem.h"
 #include <time.h>
 
 /*

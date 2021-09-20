@@ -16,8 +16,8 @@
 #define FPLYX_TYPE_LIBFPLYX_H_
 
 #include <dlfcn.h>
-#include <fplyx_type/interpreter.h>
-#include <fplyx_type/vdev.h>
+#include "interpreter.h"
+#include "vdev.h"
 
 // function symbols
 

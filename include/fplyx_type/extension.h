@@ -7,9 +7,9 @@
 
 #ifndef FPLYX_TYPE_EXTENSION_H_
 #define FPLYX_TYPE_EXTENSION_H_
-#include <fplyx_type/vdev.h>
-#include <fplyx_type/vmem.h>
-#include <fplyx_type/interpreter.h>
+#include "vdev.h"
+#include "vmem.h"
+#include "interpreter.h"
 /*
  * There are 2 struct typedefs: for devices and for virtual memory drivers
  * Note that all devices are global for all interpreters, meaning that interpreters could share the same device

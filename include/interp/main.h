@@ -6,13 +6,8 @@
 
 #ifndef FPLYX_INTERP_MAIN_H_
 #define FPLYX_INTERP_MAIN_H_
-#include <fplyx_type/extension.h>
 
-
-
-typedef struct __fplyx_interpmain_t
-{
-
-} fplyx_interpmain_t;
+#include "../fplyx_type/extension.h"
+#include <sys/cdefs.h>
 
 #endif /* FPLYX_INTERP_MAIN_H_ */
