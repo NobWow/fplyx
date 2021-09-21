@@ -8,15 +8,19 @@
 #define FPLYX_INTERP_MAIN_H_
 
 #include "../fplyx_type/extension.h"
-#include <time.h>
 #include <sys/cdefs.h>
 #include <sys/types.h>
 
-#ifdef __linux__
-#include <linux/time.h>
-#elif __FreeBSD__
+#ifndef _STRUCT_TIMESPEC
+
+#if __FreeBSD__
 #include <sys/timespec.h>
+#elif __linux__
+#include <linux/time.h>
 #endif
+
+#endif
+
 /*
 
 	void (*prepare)(struct __fplyx_interpreter_impl_t *);
