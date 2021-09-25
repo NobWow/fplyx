@@ -44,8 +44,8 @@ void fplyx_devstdout_prepare(fplyx_vdevice_impl_t *self)
             FPLYX_VDEV_IOMODE_FD;
         self->vdevice->iostate =
             FPLYX_VDEV_IOSTATE_WOPEN;
-        self->vdevice->_fd = STDOUT_FILENO;
-        self->vdevice->make_pollfd = &__fplyx_devstdout_mkpfd;
+        self->vdevice->handle = STDOUT_FILENO;
+        self->vdevice->hndsize = 0; /*not a pointer and/or not allocated*/
         self->vdevice->read_available = &__fplyx_devstdout_rav;
         self->vdevice->write_available = &__fplyx_devstdout_wav;
         self->vdevice->open_read = &__fplyx_devstdout_opr;
@@ -59,16 +59,6 @@ void fplyx_devstdout_prepare(fplyx_vdevice_impl_t *self)
         self->vdevice->flush_read = &__fplyx_devstdout_fr;
         self->vdevice->flush_write = &__fplyx_devstdout_fw;
     }
-}
-
-struct pollfd __fplyx_devstdout_mkpfd(fplyx_vdevice_t *self)
-{
-    struct pollfd pfd;
-    pfd.fd = STDOUT_FILENO;
-    pfd.events =
-        POLLOUT     |
-        POLLWRBAND;
-    return pfd;
 }
 
 void fplyx_devstdout_end(fplyx_vdevice_impl_t *self)

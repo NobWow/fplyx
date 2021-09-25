@@ -21,8 +21,8 @@
 
 // function symbols
 
-#define FPLYX_INTERPRETER_CREATE_SYM "fplyx_create_interpreter"
-#define FPLYX_INTERPRETER_DESTROY_SYM "fplyx_destroy_interpreter"
+const char* const FPLYX_INTERPRETER_CREATE_SYM = "fplyx_create_interpreter";
+const char* const FPLYX_INTERPRETER_DESTROY_SYM = "fplyx_destroy_interpreter";
 
 // source code
 

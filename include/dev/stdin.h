@@ -5,7 +5,6 @@
 fplyx_vdevice_impl_t * fplyx_devstdin_create();
 void fplyx_devstdin_prepare(fplyx_vdevice_impl_t *self);
 void fplyx_devstdin_end(fplyx_vdevice_impl_t *self);
-struct pollfd __fplyx_devstdin_mkpfd(fplyx_vdevice_t *self);
 char __fplyx_devstdin_rav (fplyx_vdevice_t *self);
 char __fplyx_devstdin_wav (fplyx_vdevice_t *self);
 char __fplyx_devstdin_opr (fplyx_vdevice_t *self);

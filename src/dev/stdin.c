@@ -41,8 +41,8 @@ void fplyx_devstdin_prepare(fplyx_vdevice_impl_t *self)
             FPLYX_VDEV_IOMODE_FD;
         self->vdevice->iostate =
             FPLYX_VDEV_IOSTATE_ROPEN;
-        self->vdevice->_fd = STDIN_FILENO;
-        self->vdevice->make_pollfd = &__fplyx_devstdin_mkpfd; 
+        self->vdevice->handle = STDIN_FILENO;
+        self->vdevice->hndsize = 0; /*not a pointer and/or not allocated*/
         self->vdevice->read_available = &__fplyx_devstdin_rav;
         self->vdevice->write_available = &__fplyx_devstdin_wav;
         self->vdevice->open_read = &__fplyx_devstdin_opr;
@@ -76,15 +76,6 @@ void fplyx_devstdin_end(fplyx_vdevice_impl_t *self)
     free(self->vdevice);
 }
 
-struct pollfd __fplyx_devstdin_mkpfd(fplyx_vdevice_t *self)
-{
-    struct pollfd pfd;
-    pfd.fd = STDIN_FILENO;
-    pfd.events =
-        POLLIN     |
-        POLLRDBAND;
-    return pfd;
-}
 
 /* when _fd and pollfd are unset */
 char __fplyx_devstdin_rav (fplyx_vdevice_t *self)

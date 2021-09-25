@@ -13,7 +13,6 @@
 fplyx_vdevice_impl_t * fplyx_devstdout_create();
 void fplyx_devstdout_prepare(fplyx_vdevice_impl_t *self);
 void fplyx_devstdout_end(fplyx_vdevice_impl_t *self);
-struct pollfd __fplyx_devstdout_mkpfd(fplyx_vdevice_t *self);
 char __fplyx_devstdout_rav (fplyx_vdevice_t *self);
 char __fplyx_devstdout_wav (fplyx_vdevice_t *self);
 char __fplyx_devstdout_opr (fplyx_vdevice_t *self);
