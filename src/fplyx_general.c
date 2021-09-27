@@ -32,7 +32,7 @@ void fplyxg_dev_deallocbuf(char** buf, unsigned int* const nbuf)
     if(*buf)
     {
         free(*buf);
-        *(nbuf) = 0;
+        *nbuf = 0;
         *buf = NULL;
     }
 }

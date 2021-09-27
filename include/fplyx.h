@@ -11,6 +11,21 @@
 #include "fplyx_type/interpreter.h"
 #include <stddef.h>
 
-void fplyx_interpreter_init();
+#ifndef FPLYX_DEFAULT_INTERPRETER
+
+#if defined(_WIN32) || defined(__CYGWIN__)
+#   define FPLYX_DEFAULT_INTERPRETER "win32"
+#else
+#   define FPLYX_DEFAULT_INTERPRETER "posix"
+#endif
+
+#endif /*FPLYX_DEFAULT_INTERPRETER*/
+
+
+#ifndef FPLYX_DEFAULT_VMEMDRV
+#   define FPLYX_DEFAULT_VMEMDRV "ram"
+#endif /*FPLYX_DEFAULT_VMEMDRV*/
+
+fplyx_interpreter_t* fplyx_interpreter_init(char* interpname, char* vmemname);
 
 #endif /* FPLYX_H_ */

@@ -32,6 +32,12 @@ void __fplyx_interpposix_end(fplyx_interpreter_t* const self)
     for(unsigned int i = 0; i < self->npend; i++)
         free(self->pending[i]);
     free(self->pending);
+    /*destroy virtual memory*/
+    if(self->vmem)
+        self->vmem->end(self->vmem);
+    free(self->vmem);
+    /*destroy instance*/
+    free(instance);
 }
 unsigned int __fplyx_interpposix_getdevid(fplyx_interpreter_t* const self, char* const name)
 {
