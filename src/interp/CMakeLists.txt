@@ -1,0 +1,5 @@
+if(WIN32)
+target_sources(fplyx PUBLIC win32.c)
+else()
+target_sources(fplyxdbg PUBLIC posix.c)
+endif()
