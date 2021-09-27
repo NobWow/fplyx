@@ -735,8 +735,15 @@ char __fplyx_memram_wnd(fplyx_vmem_t* const self, char* const name, char* const 
     /* context */
     struct fplyx_memram_context* ctx = __fplyx_memram_getctx(instance, subthrid);
     struct __fplyx_memram_ndataid origin;
+    char mainfunc = 0;
     if(!ctx)
         return 0+8;
+    /* execution stack is empty: assume that this named data is an executable and should be main for this subthread */
+    if(!ctx->execstack.nref)
+    {
+        __fplyx_memram_inc_execstack(self, NULL, NULL, 0, subthrid);
+        mainfunc = 1;
+    }
     __fplyx_memram_getndata(self, name, ctx->execstack.nref-1, subthrid, &origin);
     if(origin.ndata)
         return 0+16;
@@ -780,6 +787,13 @@ char __fplyx_memram_wnd(fplyx_vmem_t* const self, char* const name, char* const 
         result->id = ntab->ntabc - 1;
         result->ndata = target;
         result->subthrid = *subthrid;
+    }
+    if(mainfunc)
+    {
+        ((fplyx_memram_ndataid)ctx->execstack.refs[0]->namedataid)->ctx = ctx;
+        ((fplyx_memram_ndataid)ctx->execstack.refs[0]->namedataid)->id = 0;
+        ((fplyx_memram_ndataid)ctx->execstack.refs[0]->namedataid)->ndata = target;
+        ((fplyx_memram_ndataid)ctx->execstack.refs[0]->namedataid)->subthrid = *subthrid;
     }
     return 1;
 }
@@ -1137,7 +1151,11 @@ char __fplyx_memram_inc_execstack(fplyx_vmem_t* const self, fplyx_memram_ndataid
     target->cmdptr = operator_start;
     /* copy id */
     target->namedataid = malloc(sizeof(struct __fplyx_memram_ndataid));
-    *((fplyx_memram_ndataid)target->namedataid) = *ndataid;
+    /* in the case of the first stack node: ctx->execstack.nref == 0 
+     * we allow to create a stack node without an executable named data
+     */
+    if(ctx->execstack.nref)
+        *((fplyx_memram_ndataid)target->namedataid) = *ndataid;
     if(has_result)
     {
         target->result_namedataid = malloc(sizeof(struct __fplyx_memram_ndataid));

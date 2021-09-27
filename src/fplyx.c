@@ -7,7 +7,6 @@
  */
 #include <fplyx.h>
 #include <fplyx_type/interpreter.h>
-#include <fplyx_exti.h>
 #include <stdlib.h>
 
 fplyx_interpreter_t* fplyx_interpreter_init(char* name, char* vmemname)
@@ -50,4 +49,13 @@ void fplyx_interpreter_destroy(fplyx_interpreter_t* self)
     /*destroy instance*/
     free(self->_instance);
     free(self);
+}
+char fplyx_interpreter_load(fplyx_interpreter_t* interpreter, char* data, size_t size)
+{
+    /* attempt to create named data with name "main"
+     * giving the control to manage the data to the memory driver
+     */
+    char* const main = malloc(1);
+    *main = *"\x00";
+    return interpreter->vmem->write_named_data(interpreter->vmem, main, data, size, NULL, NULL);
 }

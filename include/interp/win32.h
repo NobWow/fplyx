@@ -23,6 +23,6 @@ void __fplyx_interpposix_end(fplyx_interpreter_t* self);
 char __fplyx_interpposix_tick(fplyx_interpreter_t* self);
 char __fplyx_interpposix_tickchain(fplyx_interpreter_t* self);
 char __fplyx_interpposix_xavail(fplyx_interpreter_t* self);
-char __fplyx_interpposix_xchunkmrk(fplyx_interpreter_t* self);
+char __fplyx_interpposix_xchunkmrk(fplyx_interpreter_t* self, unsigned int);
 char __fplyx_interpposix_xall(fplyx_interpreter_t* self);
 #endif /* FPLYX_INTERP_WIN32_H_ */

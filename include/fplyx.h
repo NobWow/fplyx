@@ -8,8 +8,10 @@
 #ifndef FPLYX_H_
 #define FPLYX_H_
 
-#include "fplyx_type/interpreter.h"
+#include "fplyx_general.h"
+#include <fplyx_type/interpreter.h>
 #include <stddef.h>
+#include <fplyx_exti.h>
 
 #ifndef FPLYX_DEFAULT_INTERPRETER
 
@@ -28,5 +30,6 @@
 
 fplyx_interpreter_t* fplyx_interpreter_init(char* interpname, char* vmemname);
 void fplyx_interpreter_destroy(fplyx_interpreter_t* interpreter);
+char fplyx_interpreter_load(fplyx_interpreter_t* interpreter, char* data, size_t size);
 
 #endif /* FPLYX_H_ */

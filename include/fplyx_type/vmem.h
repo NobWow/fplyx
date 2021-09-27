@@ -106,7 +106,7 @@ typedef struct __fplyx_vmem_t
     /* need for iterating over named data */
     unsigned long (*name_tab_size)(struct __fplyx_vmem_t *, unsigned long pos, void* /*subthrid*/);
     void (*get_named_data_at)(struct __fplyx_vmem_t *, unsigned long /*id*/, unsigned long /*pos*/, void* /*subthrid*/, void* /*result namedataid*/);
-    char (*write_named_data)(struct __fplyx_vmem_t *, char* /*name*/, char* /*data*/ , size_t /*size*/, void* /*subthrpathid*/, void* /*result namedataid*/); 
+    char (*write_named_data)(struct __fplyx_vmem_t *, char* /*name*/, char* /*data*/ , size_t /*size*/, void* /*subthrid*/, void* /*result namedataid*/);  /*create a new named data to the top execution stack. If there are no execution stacks then it will create a new one and assume that this named data is an FPlyx code (main function)*/
     char (*append_named_data)(struct __fplyx_vmem_t *, void* /*namedataid*/, char* /*data*/, size_t /*size*/); 
     char (*cut_named_data)(struct __fplyx_vmem_t *, void* /*namedataid*/, size_t /*size*/, size_t /*offset*/); 
     char (*insert_named_data)(struct __fplyx_vmem_t *, void* /*namedataid*/, char* /*inserting data*/, size_t /*data size*/, size_t /*offset*/);
