@@ -26,18 +26,6 @@ fplyx_interpreter_t * fplyx_interpposix_obtain(fplyx_interpreter_impl_t* const s
 void __fplyx_interpposix_end(fplyx_interpreter_t* const self)
 {
     fplyx_interpposix_t* const instance = self->_instance;
-    /*assume that devices should be closed and freed from the outside*/
-    free(self->devices);
-    /*destroy all pendings*/
-    for(unsigned int i = 0; i < self->npend; i++)
-        free(self->pending[i]);
-    free(self->pending);
-    /*destroy virtual memory*/
-    if(self->vmem)
-        self->vmem->end(self->vmem);
-    free(self->vmem);
-    /*destroy instance*/
-    free(instance);
 }
 unsigned int __fplyx_interpposix_getdevid(fplyx_interpreter_t* const self, char* const name)
 {

@@ -27,5 +27,6 @@
 #endif /*FPLYX_DEFAULT_VMEMDRV*/
 
 fplyx_interpreter_t* fplyx_interpreter_init(char* interpname, char* vmemname);
+void fplyx_interpreter_destroy(fplyx_interpreter_t* interpreter);
 
 #endif /* FPLYX_H_ */

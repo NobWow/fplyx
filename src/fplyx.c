@@ -35,3 +35,19 @@ fplyx_interpreter_t* fplyx_interpreter_init(char* name, char* vmemname)
     interpreter->vmem = vmem;
     return interpreter;
 }
+void fplyx_interpreter_destroy(fplyx_interpreter_t* self)
+{
+    /*assume that devices should be closed and freed from the outside*/
+    free(self->devices);
+    /*destroy all pendings*/
+    for(unsigned int i = 0; i < self->npend; i++)
+        free(self->pending[i]);
+    free(self->pending);
+    /*destroy virtual memory*/
+    if(self->vmem)
+        self->vmem->end(self->vmem);
+    free(self->vmem);
+    /*destroy instance*/
+    free(self->_instance);
+    free(self);
+}
