@@ -1,5 +1,4 @@
 #include <dev/stdin.h>
-#include <poll.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -41,8 +40,7 @@ void fplyx_devstdin_prepare(fplyx_vdevice_impl_t *self)
             FPLYX_VDEV_IOMODE_FD;
         self->vdevice->iostate =
             FPLYX_VDEV_IOSTATE_ROPEN;
-        self->vdevice->handle = STDIN_FILENO;
-        self->vdevice->hndsize = 0; /*not a pointer and/or not allocated*/
+        self->vdevice->handle = stdin;
         self->vdevice->read_available = &__fplyx_devstdin_rav;
         self->vdevice->write_available = &__fplyx_devstdin_wav;
         self->vdevice->open_read = &__fplyx_devstdin_opr;

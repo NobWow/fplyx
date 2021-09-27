@@ -1,11 +1,11 @@
-/* interp/main.h - the main upstream interpreter for the FPlyx bytecode
+/* interp/posix.h - the POSIX (posix upstream) interpreter for the FPlyx bytecode
  * Dispatches the code in the virtual memory. Interacts with the virtual devices.
  * Shipped with one-tick interpreter and single thread event loop
  * Multithreaded event loop in the progress...
  */
 
-#ifndef FPLYX_INTERP_MAIN_H_
-#define FPLYX_INTERP_MAIN_H_
+#ifndef FPLYX_INTERP_POSIX_H_
+#define FPLYX_INTERP_POSIX_H_
 
 #include "../fplyx_type/extension.h"
 #include <sys/cdefs.h>
@@ -36,22 +36,26 @@
 */
 
 
-typedef struct __fplyx_interpmain_t
+typedef struct __fplyx_interpposix_t
 {
     unsigned int _last_devid; /*for accessing device for IO*/
     unsigned int _last_polldevid; /*for reading revents*/
-    struct timespec ppollsleep;
-} fplyx_interpmain_t;
+} fplyx_interpposix_t;
 
 
-void fplyx_interpmain_prepare(fplyx_interpreter_t* self);
-void fplyx_interpmain_end(fplyx_interpreter_t* self);
-fplyx_interpreter_t * fplyx_interpmain_obtain(fplyx_interpreter_t* self);
+void fplyx_interpposix_prepare(fplyx_interpreter_impl_t* self);
+void fplyx_interpposix_end(fplyx_interpreter_impl_t* self);
+fplyx_interpreter_t * fplyx_interpposix_obtain(fplyx_interpreter_impl_t* self);
 
-char __fplyx_interpmain_tick(fplyx_interpreter_t* self);
-char __fplyx_interpmain_tickchain(fplyx_interpreter_t* self);
-char __fplyx_interpmain_xavail(fplyx_interpreter_t* self);
-char __fplyx_interpmain_xchunkmrk(fplyx_interpreter_t* self);
-char __fplyx_interpmain_xall(fplyx_interpreter_t* self);
+void __fplyx_interpposix_end(fplyx_interpreter_t* self);
+unsigned int __fplyx_interpposix_getdevid(fplyx_interpreter_t* self, char* name);
+unsigned int __fplyx_interpposix_getdevptrid(fplyx_interpreter_t* self, fplyx_vdevice_t* dev);
+char __fplyx_interpposix_disconndev(fplyx_interpreter_t* self, fplyx_vdevice_t* dev);
+char __fplyx_interpposix_conndev(fplyx_interpreter_t* self, fplyx_vdevice_t* dev);
+char __fplyx_interpposix_tick(fplyx_interpreter_t* self);
+char __fplyx_interpposix_tickchain(fplyx_interpreter_t* self);
+char __fplyx_interpposix_xavail(fplyx_interpreter_t* self);
+char __fplyx_interpposix_xchunkmrk(fplyx_interpreter_t* self);
+char __fplyx_interpposix_xall(fplyx_interpreter_t* self);
 
-#endif /* FPLYX_INTERP_MAIN_H_ */
+#endif /* FPLYX_INTERP_POSIX_H_ */

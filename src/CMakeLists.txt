@@ -12,3 +12,4 @@ target_sources(fplyxdbg
 )
 add_subdirectory(dev)
 add_subdirectory(vmemdrv)
+add_subdirectory(interp)

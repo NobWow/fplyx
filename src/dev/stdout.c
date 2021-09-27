@@ -1,7 +1,6 @@
 #include <stdio.h>
 
 #include <dev/stdout.h>
-#include <poll.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -11,7 +10,6 @@
 fplyx_vdevice_impl_t* fplyx_devstdout_create()
 {
     fplyx_vdevice_impl_t* extension = malloc(sizeof(fplyx_vdevice_impl_t));
-    if(extension) printf(" yes\n"); else printf(" no\n");
     memset((void *)extension, 0, sizeof(fplyx_vdevice_impl_t));
     extension->name = "stdout";
     extension->prepare = &fplyx_devstdout_prepare;
@@ -44,8 +42,7 @@ void fplyx_devstdout_prepare(fplyx_vdevice_impl_t *self)
             FPLYX_VDEV_IOMODE_FD;
         self->vdevice->iostate =
             FPLYX_VDEV_IOSTATE_WOPEN;
-        self->vdevice->handle = STDOUT_FILENO;
-        self->vdevice->hndsize = 0; /*not a pointer and/or not allocated*/
+        self->vdevice->handle = stdout;
         self->vdevice->read_available = &__fplyx_devstdout_rav;
         self->vdevice->write_available = &__fplyx_devstdout_wav;
         self->vdevice->open_read = &__fplyx_devstdout_opr;

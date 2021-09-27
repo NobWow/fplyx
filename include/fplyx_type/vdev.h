@@ -8,6 +8,7 @@
 #ifndef FPLYX_TYPE_VDEV_H_
 #define FPLYX_TYPE_VDEV_H_
 #include <stddef.h>
+#include <stdio.h>
 #include <sys/types.h>
 
 #define FPLYX_VDEV_IOMODE_READABLE  1
@@ -54,15 +55,12 @@ typedef struct __fplyx_vdevice_t
      * 8. wbuf is not empty
 	 */
 	char			iostate;
-    /*this has been changed for a Windows port*/
-	void*           handle;
-    size_t          hndsize;
-    /*struct pollfd*  pollfd;*/
+	FILE*           handle;
 	unsigned int 	alloc_rbuf;
 	char* 			rbuf;
 	unsigned int	alloc_wbuf;
 	char*			wbuf;
-	const char*		name; //null-terminated
+	char*	    	name; //null-terminated
 	char 			(*read_available)(struct __fplyx_vdevice_t *);
 	char 			(*write_available)(struct __fplyx_vdevice_t *);
 	/* In most cases, these pointers point to the predefined implementations using poll() with null timeout */
@@ -73,7 +71,7 @@ typedef struct __fplyx_vdevice_t
     char            (*seek_read)(struct __fplyx_vdevice_t *, int);
     char            (*seek_write)(struct __fplyx_vdevice_t *, int);
 	char			(*read)(struct __fplyx_vdevice_t *, char * /*data to read into*/, size_t);
-	char			(*write)(struct __fplyx_vdevice_t *, const char * /*data to write from*/, size_t);
+	char			(*write)(struct __fplyx_vdevice_t *, char * /*data to write from*/, size_t);
 	char			(*flush_read)(struct __fplyx_vdevice_t *);
 	char			(*flush_write)(struct __fplyx_vdevice_t *);
 

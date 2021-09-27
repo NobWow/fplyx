@@ -9,15 +9,14 @@
 #define FPLYX_TYPE_INTERPRETER_H_
 #include "vdev.h"
 #include "vmem.h"
-#include <time.h>
 
 /*
  * FPlyx Interpreter is a single execution thread (with virtual sub-thread handling) that operates on an virtual memory
  * There is different solutions of how to execute FPlyx code.
- * If our goal is to integrate the interpreter into another event loop, the library provides an
- * interpreter function that does 1 single tick of FPlyx code at the stack(s) and returns. This gives an opportunity to run code at
+ * The library provides an interpreter function that does 1 single tick of FPlyx code at the stack(s) and returns. This gives an opportunity to run code at
  * arbitrary speed and avoid unwanted CPU overload.
- * However, the library implements its own event loop if the code is used in real system
+ * However, the library implements its own event loop if the code is used in a separate thread.
+ * For better integrability, implement your own devices to freely wait on it according to your event loop implementation
  */
 typedef struct
 {
@@ -59,7 +58,7 @@ typedef struct __fplyx_interpreter_t
 	unsigned int 			ndev;
 	unsigned int			npend;
 	//execution options is either used by a third-party software or by built-in interpreter function
-	unsigned int			tick_interval_nsec; //is an interval between each execution in nanoseconds
+	unsigned int			tick_interval_msec; //is an interval between each execution in nanoseconds
     /* 
      * Implementations should provide at least 1 function: exec_tick
      * exec_tick performs exactly single tick of the code and is used
@@ -69,11 +68,15 @@ typedef struct __fplyx_interpreter_t
      * To execute trusted code use exec_chunkmrk or exec_tick_chain
      * to perform single tick of code for all subthreads at the same time
      */
+    char (*connect_device)(struct __fplyx_interpreter_t *, fplyx_vdevice_t*); /* attach a device to the interpreter */
+    char (*disconnect_device)(struct __fplyx_interpreter_t *, fplyx_vdevice_t*); /* detach a device from the interpreter */
+    fplyx_vdevice_t* (*get_device)(struct __fplyx_interpreter_t*, char*); /* find a (real) device attached to this interpreter */
+    unsigned long (*get_sleep_remaining)(struct __fplyx_interpreter_t*); /* get the least remaining sleep time */
     char (*exec_tick)(struct __fplyx_interpreter_t *); /* execute a single statement and prepare vmem to the next iter*/
     char (*exec_tick_chain)(struct __fplyx_interpreter_t *); /* execute every single available subthread */
     char (*exec_available)(struct __fplyx_interpreter_t *); /* whether or not there is subthreads that is not pending */
-    char (*exec_chunkmrk)(struct __fplyx_interpreter_t *, unsigned int); /*idk what does it mean*/
-    /* Potentially dangerous for running untrusted code! Blocks until all the code is dispatched*/
+    char (*exec_chunkmrk)(struct __fplyx_interpreter_t *, unsigned int); /*execute all non-blocking statements as much as possible or until the limit is reached*/
+    /* Use it only in a separate thread. Blocks until all the code is dispatched*/
     char (*exec_all)(struct __fplyx_interpreter_t *);
 } fplyx_interpreter_t;
 
