@@ -7,6 +7,7 @@
  */
 #include <fplyx.h>
 #include <fplyx_type/interpreter.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 fplyx_interpreter_t* fplyx_interpreter_init(char* name, char* vmemname)

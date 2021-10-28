@@ -41,7 +41,6 @@ typedef struct __fplyx_vdevice_t
 	 * 8. custom (not explicitly defined)
 	 */
 	char 			iomode;
-	unsigned long	iopos;
 	/*
 	 * iostate sets 8 bits to define its current state
 	 * 1. device is opened for reading
@@ -55,12 +54,19 @@ typedef struct __fplyx_vdevice_t
      * 8. wbuf is not empty
 	 */
 	char			iostate;
-	FILE*           handle;
+	unsigned long	iopos;
 	unsigned int 	alloc_rbuf;
-	char* 			rbuf;
 	unsigned int	alloc_wbuf;
+	FILE*           handle;
+	char* 			rbuf;
 	char*			wbuf;
 	char*	    	name; //null-terminated
+    /* _instance, prepare and end only for non-static devices that are attached to an interpreter
+     * Usually, an _instance is a pointer to an interpreter, so it isn't necessary to destroy it.
+     */
+    void*           _instance;
+	void            (*prepare)(struct __fplyx_vdevice_t *); 
+	void            (*end)(struct __fplyx_vdevice_t *);
 	char 			(*read_available)(struct __fplyx_vdevice_t *);
 	char 			(*write_available)(struct __fplyx_vdevice_t *);
 	/* In most cases, these pointers point to the predefined implementations using poll() with null timeout */

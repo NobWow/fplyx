@@ -25,20 +25,23 @@ typedef struct __fplyx_vdevice_impl_t
 	fplyx_vdevice_t *vdevice;
 } fplyx_vdevice_impl_t;
 
+
+typedef struct __fplyx_vnsdevice_impl_t
+{
+	char* name;
+	fplyx_vdevice_t *(*obtain)(struct __fplyx_interpreter_t*); /*should return a vdevice with non-zero _instance, prepare() and end()*/
+} fplyx_vnsdevice_impl_t;
+
 /* prepare & end might be deprecated for mem and interpreter since these functions are embed into instance */
 typedef struct __fplyx_memdrv_impl_t
 {
 	char* name;
-	void (*prepare)(struct __fplyx_memdrv_impl_t *);
-	void (*end)(struct __fplyx_memdrv_impl_t *);
 	fplyx_vmem_t *(*obtain)();
 } fplyx_memdrv_impl_t;
 
 typedef struct __fplyx_interpreter_impl_t
 {
 	char* name;
-	void (*prepare)(struct __fplyx_interpreter_impl_t *);
-	void (*end)(struct __fplyx_interpreter_impl_t *);
 	fplyx_interpreter_t *(*obtain)();
 } fplyx_interpreter_impl_t;
 #endif /* FPLYX_TYPE_EXTENSION_H_ */

@@ -137,7 +137,7 @@ char __fplyx_devstdin_r(fplyx_vdevice_t *self, char* target_ptr, size_t amount)
     else
         return 0;
 }
-char __fplyx_devstdin_w(fplyx_vdevice_t *self, const char* data_ptr, size_t amount)
+char __fplyx_devstdin_w(fplyx_vdevice_t *self, char* data_ptr, size_t amount)
 {
 
     if(!(self->iostate & FPLYX_VDEV_IOSTATE_WERR))
@@ -161,7 +161,7 @@ char __fplyx_devstdin_fw(fplyx_vdevice_t *self)
 	char			(*close_read)(struct __fplyx_vdevice_t *);
 	char			(*close_write)(struct __fplyx_vdevice_t *);
 	char			(*read)(struct __fplyx_vdevice_t *, char * , size_t);
-	char			(*write)(struct __fplyx_vdevice_t *, const char * , size_t);
+	char			(*write)(struct __fplyx_vdevice_t *, char * , size_t);
 	char			(*flush_read)(struct __fplyx_vdevice_t *);
 	char			(*flush_write)(struct __fplyx_vdevice_t *);
 */

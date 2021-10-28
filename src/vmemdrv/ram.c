@@ -1,4 +1,3 @@
-//6jw
 #include <limits.h>
 #include <stddef.h>
 #include <unistd.h>
@@ -10,52 +9,6 @@
 #include <stdint.h>
 #include <math.h>
 
-/*
-typedef struct __fplyx_memdrv_impl_t
-{
-	const char* name;
-	void (*prepare)(struct __fplyx_memdrv_impl_t *);
-	void (*end)(struct __fplyx_memdrv_impl_t *);
-	fplyx_vmem_t *(*obtain)();
-} fplyx_memdrv_impl_t;
-*/
-/*
-void del_element(size_t size, unsigned long id)
-{
-	target->end(target);
-	free(target);
-	assert((size_t) target == (size_t)((size_t)fplyx_vdevices + (ri) * sizeof(void *)));
-	memmove(fplyx_vdevices + (ri) * sizeof(void *),
-			fplyx_vdevices + (ri + 1) * sizeof(void *),
-			(size_t)((fplyx_vdev_n - ri + 1) * sizeof(void *)));
-
-	fplyx_vdevices = (fplyx_vdevice_impl_t **) realloc(fplyx_vdevices,
-    (--fplyx_vdev_n)*sizeof(void *) );
-}
-*/
-
-/* The reason of why this exists is memram_t instance has its separate nametable 
- * from subthr_t
- */
-
-/*
-struct fplyx_memram_ctxndata
-{
-    struct fplyx_memram_context *ctx;
-    fplyx_memram_ndata_t* ndata;
-};
-
-struct fplyx_memram_ctxcdev
-{
-    struct fplyx_memram_context *ctx;
-    fplyx_memram_cdev_t* cdev;
-}; */
-
-void fplyx_memram_prepare(fplyx_memdrv_impl_t* const self)
-{
-    self->name = "ram";
-}
-void fplyx_memram_end(fplyx_memdrv_impl_t* const self) {}
 fplyx_vmem_t* fplyx_memram_obtain(fplyx_memdrv_impl_t* const self)
 {
     fplyx_vmem_t * const result = malloc(sizeof(fplyx_vmem_t));

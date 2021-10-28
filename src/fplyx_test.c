@@ -1,3 +1,4 @@
+#include <fplyx.h>
 #include <fplyx_general.h>
 #include <fplyx_exti.h>
 #include <stdio.h>
@@ -17,6 +18,7 @@ int main(int argc, char** argv) {
     that->prepare(that);
     printf("segfault here?\n");
     /* bruh */
+    fplyx_interpreter_t* interpreter = fplyx_interpreter_init(NULL, NULL);
     fplyx_exti_vdevadd(that);
     puts("Segmentation faulted (core dumpet)");
     /* stdout is already open */
@@ -27,5 +29,6 @@ int main(int argc, char** argv) {
     /* that->end() is not called here, instead use fplyx_exti_vdevdel, as it calls that->end() as well as removing the element from the array */
     fplyx_exti_vdevdel("stdout");
     fplyx_exti_end();
+    fplyx_interpreter_destroy(interpreter);
     free(fds);
 }

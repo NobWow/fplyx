@@ -129,7 +129,7 @@ char __fplyx_devstdout_r(fplyx_vdevice_t *self, char* target_ptr, size_t amount)
     self->iostate |= FPLYX_VDEV_IOSTATE_RERR;
     return 0;
 }
-char __fplyx_devstdout_w (fplyx_vdevice_t *self, const char* data_ptr, size_t amount)
+char __fplyx_devstdout_w (fplyx_vdevice_t *self, char* data_ptr, size_t amount)
 {
     if(
         (self->iostate & FPLYX_VDEV_IOSTATE_WAVAIL) &&

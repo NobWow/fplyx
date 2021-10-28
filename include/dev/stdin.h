@@ -14,7 +14,7 @@ char __fplyx_devstdin_clw (fplyx_vdevice_t *self);
 char __fplyx_devstdin_sr (fplyx_vdevice_t *self, int offset);
 char __fplyx_devstdin_sw (fplyx_vdevice_t *self, int offset);
 char __fplyx_devstdin_r (fplyx_vdevice_t *self, char* target_ptr, size_t amount);
-char __fplyx_devstdin_w (fplyx_vdevice_t *self, const char* data_ptr, size_t amount);
+char __fplyx_devstdin_w (fplyx_vdevice_t *self, char* data_ptr, size_t amount);
 char __fplyx_devstdin_fr (fplyx_vdevice_t *self);
 char __fplyx_devstdin_fw (fplyx_vdevice_t *self);
 

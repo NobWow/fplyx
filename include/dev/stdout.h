@@ -22,7 +22,7 @@ char __fplyx_devstdout_clw (fplyx_vdevice_t *self);
 char __fplyx_devstdout_sr (fplyx_vdevice_t *self, int offset);
 char __fplyx_devstdout_sw (fplyx_vdevice_t *self, int offset);
 char __fplyx_devstdout_r (fplyx_vdevice_t *self, char* target_ptr, size_t amount);
-char __fplyx_devstdout_w (fplyx_vdevice_t *self, const char* data_ptr, size_t amount);
+char __fplyx_devstdout_w (fplyx_vdevice_t *self, char* data_ptr, size_t amount);
 char __fplyx_devstdout_fr (fplyx_vdevice_t *self);
 char __fplyx_devstdout_fw (fplyx_vdevice_t *self);
 

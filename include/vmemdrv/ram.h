@@ -186,8 +186,6 @@ typedef struct __fplyx_memram_exstacknodeid
     fplyx_memram_exstacknode_t* exstacknode;
 }* fplyx_memram_exstacknodeid;
 
-void fplyx_memram_prepare(fplyx_memdrv_impl_t* self);
-void fplyx_memram_end(fplyx_memdrv_impl_t* self);
 fplyx_vmem_t* fplyx_memram_obtain(fplyx_memdrv_impl_t* self);
 char __fplyx_memram_prepare(fplyx_vmem_t* self);
 char __fplyx_memram_end(fplyx_vmem_t* self);
