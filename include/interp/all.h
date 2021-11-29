@@ -5,7 +5,7 @@
 #ifndef FPLYX_INTERP_ALL_H_
 #define FPLYX_INTERP_ALL_H_
 
-#include <fplyx_type/interpreter.h>
+#include "../fplyx_type/interpreter.h"
 
 char __fplyx_interpmain_tick(fplyx_interpreter_t* self);
 char __fplyx_interpmain_tickchain(fplyx_interpreter_t* self);

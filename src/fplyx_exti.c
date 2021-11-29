@@ -40,18 +40,10 @@ void fplyx_exti_end()
 	}
 	if(fplyx_memdrvs)
 	{
-		for(unsigned int i = 0; i < fplyx_memdrvs_n; i++)
-		{
-			fplyx_memdrvs[i]->end(fplyx_memdrvs[i]);
-		}
 		free(fplyx_memdrvs);
 	}
 	if(fplyx_interpreters)
 	{
-		for(unsigned int i = 0; i < fplyx_interp_n; i++)
-		{
-			fplyx_interpreters[i]->end(fplyx_interpreters[i]);
-		}
 		free(fplyx_interpreters);
 	}
 	fplyx_vdevices = NULL;
@@ -131,7 +123,6 @@ void fplyx_exti_vmemdel(const char* const name)
 	fplyx_memdrv_impl_t *target =fplyx_exti_vmemfetch(name, &ri);
 	if(!target)
 		return;
-	target->end(target);
 	free(target);
 	/* assert((size_t) target == (size_t)((size_t)fplyx_memdrvs + (ri) * sizeof(void *))); */
 	memmove(fplyx_memdrvs + (ri) * sizeof(void *),
@@ -172,7 +163,6 @@ void fplyx_exti_interpdel(const char* const name)
 	fplyx_interpreter_impl_t *target =fplyx_exti_interpfetch(name, &ri);
 	if(!target)
 		return;
-	target->end(target);
 	free(target);
 	/* assert((void *) target == (size_t)((size_t)fplyx_interpreters + (ri) * sizeof(void *))); */
 	memmove(fplyx_interpreters + (ri) * sizeof(void *),

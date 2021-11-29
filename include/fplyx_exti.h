@@ -14,10 +14,11 @@
 #include "fplyx_type/extension.h"
 
 extern fplyx_vdevice_impl_t ** fplyx_vdevices;
-extern unsigned int fplyx_vdev_n;
 extern fplyx_memdrv_impl_t ** fplyx_memdrvs;
-extern unsigned int fplyx_memdrvs_n;
 extern fplyx_interpreter_impl_t ** fplyx_interpreters;
+extern fplyx_tmplinterpreter_impl_t ** fplyx_tmplinterpreters;
+extern unsigned int fplyx_vdev_n;
+extern unsigned int fplyx_memdrvs_n;
 extern unsigned int fplyx_interp_n;
 
 void fplyx_exti_start();
@@ -31,5 +32,8 @@ void fplyx_exti_vmemdel(const char *name);
 void fplyx_exti_interpadd(fplyx_interpreter_impl_t *memdrv);
 fplyx_interpreter_impl_t *fplyx_exti_interpfetch(const char *name, unsigned int *ri);
 void fplyx_exti_interpdel(const char *name);
+void fplyx_exti_tmplinterpadd(fplyx_interpreter_impl_t *memdrv);
+fplyx_interpreter_impl_t *fplyx_exti_tmplinterpfetch(const char *name, unsigned int *ri);
+void fplyx_exti_tmplinterpdel(const char *name);
 
 #endif /* FPLYX_EXTI_H_ */

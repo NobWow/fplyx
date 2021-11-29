@@ -44,4 +44,10 @@ typedef struct __fplyx_interpreter_impl_t
 	char* name;
 	fplyx_interpreter_t *(*obtain)();
 } fplyx_interpreter_impl_t;
+
+typedef struct __fplyx_template_impl_t
+{
+    char* name;
+    fplyx_tmplinterpreter_t *(*obtain)();
+} fplyx_template_impl_t;
 #endif /* FPLYX_TYPE_EXTENSION_H_ */
