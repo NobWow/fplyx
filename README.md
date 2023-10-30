@@ -1,5 +1,5 @@
-# WIP (work in progress)
-The library and/or documentation is not yet complete nor debugged. Feel free to post an issues if you found some.
+# Rework is required
+This project started in 2021 and is discontinued. A new project named Corridor that uses part of this code will be started.
 # fplyx
 FPlyx (Flexible Programming language with Yieldable eXecution) - multipurpose procedure-oriented scripting engine that can be integrated into other apps with native support. It's modular structure allows other developers to write custom devices, memory interfaces (vmemdrv) and interpreters.
 # Concept
